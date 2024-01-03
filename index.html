@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web Excel-like App</title>
+    <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: black; color: green; }
+        #hot { margin: 20px auto; padding: 0; }
+        button { background-color: green; color: black; border: none; padding: 10px 20px; cursor: pointer; border-radius: 15px; }
+        button:hover { background-color: darkgreen; }
+
+        .handsontable {
+            background-color: black; !important;
+            color: green; !important;
+            border: 2px solid green; !important;
+        }
+        .ht_master {
+            background-color: black !important;
+            color: green !important;
+        }
+        .htCore {
+            background-color: black !important;
+            color: green !important;
+        }
+        .ht_clone_top, .ht_clone_left, .ht_clone_top_left_corner {
+            background-color: green !important;
+            color: black !important;
+        }
+        .htRowHeader {
+            background-color: green !important;
+            color: black !important;
+        }
+        .htColumnHeader {
+            background-color: green !important;
+            color: black !important;
+        }
+        .htContextMenu {
+            background-color: black !important;
+            color: green !important;
+            border: 1px solid green !important;
+        }
+        .htFilters {
+            background-color: green !important;
+            color: black !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="hot"></div>
+<button id="export-btn">Export to Excel</button>
+
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+    var data = [
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+
+    ];
+    var container = document.getElementById('hot');
+    var hot = new Handsontable(container, {
+        licenseKey: 'non-commercial-and-evaluation',
+        data: data,
+        comments: true,
+        autoWrapRow: true,
+        autoWrapCol: true,
+        contextMenu: true,
+        formulas: true,
+        columnSorting: true,
+        filters: true,
+        rowHeaders: true,
+        colHeaders: true,
+        stretchH: 'all',
+        className: 'htCenter htMiddle',
+        width: '100%',
+        height: 'auto',
+        manualColumnResize: true,
+        manualRowResize: true
+
+    });
+
+    // Функция для экспорта данных в Excel
+    function exportToExcel() {
+        var wb = XLSX.utils.book_new();
+        var ws = XLSX.utils.aoa_to_sheet(hot.getData());
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+        XLSX.writeFile(wb, 'excel_data.xlsx');
+    }
+
+    document.getElementById('export-btn').addEventListener('click', exportToExcel);
+    // Функция для сохранения данных в localStorage
+    function saveDataToLocalStorage() {
+        localStorage.setItem('excelData', JSON.stringify(data));
+    }
+
+    // Функция для загрузки данных из localStorage
+    function loadDataFromLocalStorage() {
+        var savedData = localStorage.getItem('excelData');
+        if (savedData) {
+            data = JSON.parse(savedData);
+            hot.loadData(data);
+        }
+    }
+
+    // Вызываем функцию загрузки данных при загрузке страницы
+    window.addEventListener('load', loadDataFromLocalStorage);
+
+    // Обновляем данные в localStorage при изменении данных в таблице
+    hot.addHook('afterChange', function() {
+        saveDataToLocalStorage();
+    });
+</script>
+</body>
+</html>
