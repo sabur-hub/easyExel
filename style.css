@@ -1,0 +1,39 @@
+body { font-family: Arial, sans-serif; background-color: black; color: green; }
+        #hot { margin: 20px auto; padding: 0; }
+        button { background-color: green; color: black; border: none; padding: 10px 20px; cursor: pointer; border-radius: 15px; }
+        button:hover { background-color: darkgreen; }
+
+        .handsontable {
+            background-color: black; !important;
+            color: green; !important;
+            border: 2px solid green; !important;
+        }
+        .ht_master {
+            background-color: black !important;
+            color: green !important;
+        }
+        .htCore {
+            background-color: black !important;
+            color: green !important;
+        }
+        .ht_clone_top, .ht_clone_left, .ht_clone_top_left_corner {
+            background-color: green !important;
+            color: black !important;
+        }
+        .htRowHeader {
+            background-color: green !important;
+            color: black !important;
+        }
+        .htColumnHeader {
+            background-color: green !important;
+            color: black !important;
+        }
+        .htContextMenu {
+            background-color: black !important;
+            color: green !important;
+            border: 1px solid green !important;
+        }
+        .htFilters {
+            background-color: green !important;
+            color: black !important;
+        }
